@@ -1,16 +1,40 @@
 from flask import Flask, request, jsonify, make_response
+from random import randrange
 
 app = Flask(__name__)
 
 ## This is going to be a simple financal stub for the online car dealership ##
 
-@app.get("/test")
+@app.get("/creditcheck")
 def test():
-    response = make_response("Test is Hit!")
-    response.headers["response"] = "Test is Actually Being Hit!"
-    response.status_code = 200
-    return response
+    # Credit Score is a random number from 300-850
+    creditScore = randrange(300, 850)
 
+    # Loan APR is predetermined based on credit score
+    if creditScore <= 500:
+        apr = 15.0
+    elif creditScore > 500 and creditScore <= 600:
+        apr = 12.0
+    elif creditScore > 600 and creditScore <= 660:
+        apr = 9.6
+    elif creditScore > 600 and creditScore <= 780:
+        apr = 7.0
+    else:
+        apr = 5.6 
+
+    return jsonify({"credit_score":creditScore, "APR":apr})
+
+# app.post("/loanqualification")
+# def loanQualification(info):
+
+# app.post("/monthlypayments")
+# def generatePayments(info)
+
+# app.post("/validateBankPayment")
+# def validateBankPayment(info)
+
+# app.post("/validateCardPayment")
+# def validateCardPayment(info)
 
 if __name__ == "__main__":
     app.run(debug=True, port=8001)
