@@ -24,29 +24,31 @@ def test():
 
     return jsonify({"credit_score":creditScore, "APR":apr})
 
-app.post("/loanqualification")
-def loanQualification(info):
-    income = info.income
-    car_price = info.car_price
-    down_payment = info.down_payment
+@app.post("/loanqualification")
+def loanQualification():
+    info = request.json
+
+    income = float(info.get("income"))
+    car_price = float(info.get("car_price"))
+    down_payment = float(info.get("down_payment"))
 
     loan_needed = car_price - down_payment
 
     # The loan can only be approved if the loan is <= 10% of the customer's annual income.
     threshold = income * .10
     # The threshold is only for 1 year, it needs to be * 5 for the course of 5 years.
-    approved = 1 if (loan_needed > threshold * 5) else 0
+    approved = 0 if (loan_needed > threshold * 5) else 1
 
     return jsonify({"approved":approved})
     
 
-# app.post("/monthlypayments")
+# @app.post("/monthlypayments")
 # def generatePayments(info)
 
-# app.post("/validateBankPayment")
+# @app.post("/validateBankPayment")
 # def validateBankPayment(info)
 
-# app.post("/validateCardPayment")
+# @app.post("/validateCardPayment")
 # def validateCardPayment(info)
 
 if __name__ == "__main__":
