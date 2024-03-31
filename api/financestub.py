@@ -85,8 +85,53 @@ def generatePayment():
     return jsonify({"loan_amount":updated_loan_amount,
                     "monthly_payment":updated_monthly_payment})
 
-# @app.post("/validateBankPayment")
-# def validateBankPayment()
+def errorResponse(message, errorType):
+        return jsonify({"isValid":0, 
+                        "message":message,
+                        "errorType":errorType})
+
+@app.post("/validatebankpayment")
+def validateBankPayment():
+    info = request.json
+
+    bank = info.get("bank")
+    account_number = info.get("account_number")
+    routing_number = info.get("routing_number")
+
+    # Check if bank is in the list of accepted banks
+    validBanks = ['Wells Fargo', 'Bank of America', 'Chase', 'Citibank', 'PNC']
+    if bank not in validBanks:
+        return errorResponse("Error, bank not accepted.", 1)
+    
+    # Check if account number is valid
+    if bank == "Wells Fargo" and (len(account_number) < 9 or len(account_number) > 13):
+        return errorResponse("Error, not a valid account number for Wells Fargo.", 2)
+    elif bank == "Bank of America" and len(account_number) != 12:
+        return errorResponse("Error, not a valid account number for Bank of America.", 2)
+    elif bank == "Chase" and (len(account_number) < 8 or len(account_number) > 17):
+        return errorResponse("Error, not a valid account number for Chase.", 2)
+    elif bank == "Citibank" and len(account_number) != 10:
+        return errorResponse("Error, not a valid account number for Citibank.", 2)
+    elif bank == "PNC" and (len(account_number) < 9 or len(account_number) > 12):
+        return errorResponse("Error, not a valid account number for PNC.", 2)
+
+    # Check if routing number is valid
+    if len(routing_number) != 9:
+        return errorResponse("Error, not a valid routing number length.", 3)
+    elif bank == "Wells Fargo" and routing_number != "021200025":
+        return errorResponse("Error, not a valid routing number for Wells Fargo.", 4)
+    elif bank == "Bank of America" and routing_number != "021200339":
+        return errorResponse("Error, not a valid routing number for Bank of America.", 4)
+    elif bank == "Chase" and routing_number != "021202337":
+        return errorResponse("Error, not a valid routing number for Chase.", 4)
+    elif bank == "Citibank" and routing_number != "021272655":
+        return errorResponse("Error, not a valid routing number for Citibank.", 4)
+    elif bank == "PNC" and routing_number != "031207607":
+        return errorResponse("Error, not a valid routing number for PNC.", 4)
+
+    return jsonify({"isValid": 1,
+                    "message":"Bank Payment Details Verified!",
+                    "errorType":0})
 
 # @app.post("/validateCardPayment")
 # def validateCardPayment()
