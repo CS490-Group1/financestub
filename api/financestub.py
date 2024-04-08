@@ -48,7 +48,7 @@ def creditCheck():
         apr = 5.6 
 
     return jsonify({"credit_score":creditScore,
-                    "apr":apr})
+                    "apr":apr}), 200
 
 @app.post("/loanqualification")
 def loanQualification():
@@ -67,7 +67,7 @@ def loanQualification():
     approved = 0 if (loan_needed > threshold * 5) else 1
 
     return jsonify({"approved":approved,
-                    "loan_approved":loan_needed})
+                    "loan_approved":loan_needed}), 200
     
 
 @app.post("/initialpayment")
@@ -80,7 +80,7 @@ def generateInitialPayment():
     monthly_payment = round(loan_amount / 60, 2)
 
     return jsonify({"loan_amount":loan_amount,
-                    "monthly_payment":monthly_payment})
+                    "monthly_payment":monthly_payment}), 200
 
 @app.post("/payment")
 def generatePayment():
@@ -107,12 +107,12 @@ def generatePayment():
     updated_monthly_payment = round(updated_loan_amount / remaining_months, 2)
 
     return jsonify({"loan_amount":updated_loan_amount,
-                    "monthly_payment":updated_monthly_payment})
+                    "monthly_payment":updated_monthly_payment}), 200
 
 def errorResponse(message, errorType):
         return jsonify({"isValid":0, 
                         "message":message,
-                        "errorType":errorType})
+                        "errorType":errorType}), 406
 
 @app.post("/validatebankpayment")
 def validateBankPayment():
@@ -155,7 +155,7 @@ def validateBankPayment():
 
     return jsonify({"isValid": 1,
                     "message":"Bank Payment Details Verified!",
-                    "errorType":0})
+                    "errorType":0}), 200
 
 def validate_credit_card(card_number: str) -> bool:
     """This function validates a credit card number."""
@@ -227,7 +227,7 @@ def validateCardPayment():
     
     return jsonify({"isValid":1,
                     "message":"Card Payment Details Verified!",
-                    "errorType":0})
+                    "errorType":0}), 200
 
 if __name__ == "__main__":
     app.run(debug=True, port=8001)
