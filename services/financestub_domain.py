@@ -1,37 +1,7 @@
-from flask import Flask, request, jsonify
-from flask_swagger_ui import get_swaggerui_blueprint
-
-from random import randrange
 from datetime import datetime
+from random import randrange
 
-app = Flask(__name__)
-
-SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
-API_URL = '/static/documentation.yaml'  # Our API url (can of course be a local resource)
-
-# Call factory function to create our blueprint
-swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
-    API_URL,
-    config={  # Swagger UI config overrides
-        'app_name': "Test application"
-    },
-    # oauth_config={  # OAuth config. See https://github.com/swagger-api/swagger-ui#oauth2-configuration .
-    #    'clientId': "your-client-id",
-    #    'clientSecret': "your-client-secret-if-required",
-    #    'realm': "your-realms",
-    #    'appName': "your-app-name",
-    #    'scopeSeparator': " ",
-    #    'additionalQueryStringParams': {'test': "hello"}
-    # }
-)
-
-app.register_blueprint(swaggerui_blueprint)
-
-## This is going to be a simple financal stub for the online car dealership ##
-
-@app.get("/creditcheck")
-def creditCheck():
+def generate_apr_credit_score_domain():
     # Credit Score is a random number from 300-850
     creditScore = randrange(300, 850)
 
@@ -45,15 +15,11 @@ def creditCheck():
     elif creditScore > 600 and creditScore <= 780:
         apr = 7.0
     else:
-        apr = 5.6 
+        apr = 5.6
+    return {"credit_score":creditScore,
+            "apr":apr}
 
-    return jsonify({"credit_score":creditScore,
-                    "apr":apr}), 200
-
-@app.post("/loanqualification")
-def loanQualification():
-    info = request.json
-
+def check_loan_qualify_domain(info):
     income = float(info.get("income"))
     car_price = float(info.get("car_price"))
     down_payment = float(info.get("down_payment"))
@@ -65,27 +31,19 @@ def loanQualification():
     
     # The threshold is only for 1 year, it needs to be * 5 for the course of 5 years.
     approved = 0 if (loan_needed > threshold * 5) else 1
+    return {"approved":approved,
+            "loan_approved":loan_needed}
 
-    return jsonify({"approved":approved,
-                    "loan_approved":loan_needed}), 200
-    
-
-@app.post("/initialpayment")
-def generateInitialPayment():
-    info = request.json
-
+def generate_initial_payment_domain(info):
     loan_amount = float(info.get("loan_amount"))
 
     # Default loan is for 5 years, so 60 months initially.
     monthly_payment = round(loan_amount / 60, 2)
 
-    return jsonify({"loan_amount":loan_amount,
-                    "monthly_payment":monthly_payment}), 200
+    return {"loan_amount":loan_amount,
+            "monthly_payment":monthly_payment}
 
-@app.post("/payment")
-def generatePayment():
-    info = request.json
-
+def generate_required_payment_domain(info):
     loan_amount = float(info.get("loan_amount"))
     apr = float(info.get("apr"))
     created = (info.get("created"))
@@ -105,57 +63,14 @@ def generatePayment():
 
     # Update Monthly Pyament based on updated loan
     updated_monthly_payment = round(updated_loan_amount / remaining_months, 2)
-
-    return jsonify({"loan_amount":updated_loan_amount,
-                    "monthly_payment":updated_monthly_payment}), 200
+    return {"loan_amount":updated_loan_amount,
+            "monthly_payment":updated_monthly_payment}
 
 def errorResponse(message, errorType):
-        return jsonify({"isValid":0, 
-                        "message":message,
-                        "errorType":errorType}), 406
-
-@app.post("/validatebankpayment")
-def validateBankPayment():
-    info = request.json
-
-    bank = info.get("bank")
-    account_number = info.get("account_number")
-    routing_number = info.get("routing_number")
-
-    # Check if bank is in the list of accepted banks
-    validBanks = ['Wells Fargo', 'Bank of America', 'Chase', 'Citibank', 'PNC']
-    if bank not in validBanks:
-        return errorResponse("Error, bank not accepted.", 1)
-    
-    # Check if account number is valid
-    if bank == "Wells Fargo" and (len(account_number) < 9 or len(account_number) > 13):
-        return errorResponse("Error, not a valid account number for Wells Fargo.", 2)
-    elif bank == "Bank of America" and len(account_number) != 12:
-        return errorResponse("Error, not a valid account number for Bank of America.", 2)
-    elif bank == "Chase" and (len(account_number) < 8 or len(account_number) > 17):
-        return errorResponse("Error, not a valid account number for Chase.", 2)
-    elif bank == "Citibank" and len(account_number) != 10:
-        return errorResponse("Error, not a valid account number for Citibank.", 2)
-    elif bank == "PNC" and (len(account_number) < 9 or len(account_number) > 12):
-        return errorResponse("Error, not a valid account number for PNC.", 2)
-
-    # Check if routing number is valid
-    if len(routing_number) != 9:
-        return errorResponse("Error, not a valid routing number length.", 3)
-    elif bank == "Wells Fargo" and routing_number != "021200025":
-        return errorResponse("Error, not a valid routing number for Wells Fargo.", 4)
-    elif bank == "Bank of America" and routing_number != "021200339":
-        return errorResponse("Error, not a valid routing number for Bank of America.", 4)
-    elif bank == "Chase" and routing_number != "021202337":
-        return errorResponse("Error, not a valid routing number for Chase.", 4)
-    elif bank == "Citibank" and routing_number != "021272655":
-        return errorResponse("Error, not a valid routing number for Citibank.", 4)
-    elif bank == "PNC" and routing_number != "031207607":
-        return errorResponse("Error, not a valid routing number for PNC.", 4)
-
-    return jsonify({"isValid": 1,
-                    "message":"Bank Payment Details Verified!",
-                    "errorType":0}), 200
+    return {"isValid":0, 
+            "message":message,
+            "errorType":errorType,
+            "code":406}
 
 def validate_credit_card(card_number: str) -> bool:
     """This function validates a credit card number."""
@@ -179,10 +94,7 @@ def validate_credit_card(card_number: str) -> bool:
     # 8. If checkSum is divisible by 10, it is valid.
     return checkSum % 10 == 0
 
-@app.post("/validatecardpayment")
-def validateCardPayment():
-    info = request.json
-
+def validate_card_payment_domain(info):
     card_company = info.get("card_company")
     card_num = ''.join(info.get("card_num").split())
     card_exp = info.get("card_exp")
@@ -224,10 +136,47 @@ def validateCardPayment():
         return errorResponse("Error, the CVC is not valid.", 6)
     elif (card_company == "American Express") and len(card_cvc) != 4:
         return errorResponse("Error, the CVC is not valid for American Express.", 6)
-    
-    return jsonify({"isValid":1,
-                    "message":"Card Payment Details Verified!",
-                    "errorType":0}), 200
+    return {"isValid":1,
+            "message":"Card Payment Details Verified!",
+            "errorType":0,
+            "code":200}
 
-if __name__ == "__main__":
-    app.run(debug=True, port=8001)
+def validate_bank_payment_domain(info):
+    bank = info.get("bank")
+    account_number = info.get("account_number")
+    routing_number = info.get("routing_number")
+
+    # Check if bank is in the list of accepted banks
+    validBanks = ['Wells Fargo', 'Bank of America', 'Chase', 'Citibank', 'PNC']
+    if bank not in validBanks:
+        return errorResponse("Error, bank not accepted.", 1)
+    
+    # Check if account number is valid
+    if bank == "Wells Fargo" and (len(account_number) < 9 or len(account_number) > 13):
+        return errorResponse("Error, not a valid account number for Wells Fargo.", 2)
+    elif bank == "Bank of America" and len(account_number) != 12:
+        return errorResponse("Error, not a valid account number for Bank of America.", 2)
+    elif bank == "Chase" and (len(account_number) < 8 or len(account_number) > 17):
+        return errorResponse("Error, not a valid account number for Chase.", 2)
+    elif bank == "Citibank" and len(account_number) != 10:
+        return errorResponse("Error, not a valid account number for Citibank.", 2)
+    elif bank == "PNC" and (len(account_number) < 9 or len(account_number) > 12):
+        return errorResponse("Error, not a valid account number for PNC.", 2)
+
+    # Check if routing number is valid
+    if len(routing_number) != 9:
+        return errorResponse("Error, not a valid routing number length.", 3)
+    elif bank == "Wells Fargo" and routing_number != "021200025":
+        return errorResponse("Error, not a valid routing number for Wells Fargo.", 4)
+    elif bank == "Bank of America" and routing_number != "021200339":
+        return errorResponse("Error, not a valid routing number for Bank of America.", 4)
+    elif bank == "Chase" and routing_number != "021202337":
+        return errorResponse("Error, not a valid routing number for Chase.", 4)
+    elif bank == "Citibank" and routing_number != "021272655":
+        return errorResponse("Error, not a valid routing number for Citibank.", 4)
+    elif bank == "PNC" and routing_number != "031207607":
+        return errorResponse("Error, not a valid routing number for PNC.", 4)
+    return{"isValid":1,
+            "message":"Bank Payment Details Verified!",
+            "errorType":0,
+            "code":200}
