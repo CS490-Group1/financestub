@@ -7,8 +7,9 @@ Later for ORM mapping
 # pylint: disable=too-many-instance-attributes, too-many-arguments, too-few-public-methods
 class Approved_Loan:
     '''Loan class'''
-    def __init__(self, email, vin, apr, initial_loan_amount=0,
+    def __init__(self, request_id, email, vin, apr, initial_loan_amount=0,
                 current_loan_amount=0, monthly_payment=0):
+        self.request_id = request_id
         self.email = email
         self.vin = vin
         self.apr = apr

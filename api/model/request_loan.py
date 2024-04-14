@@ -10,8 +10,7 @@ class Request_Loan:
     def __init__(self, email, credit_score, apr, vin,
                   income=0, car_price=0, down_payment=0,
                   max_loan_amount=0, actual_loan_amount=0,
-                  approved=0,
-                  ):
+                  approved=0):
         self.email = email
         self.credit_score = credit_score
         self.apr = apr

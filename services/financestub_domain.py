@@ -39,12 +39,10 @@ def check_loan_qualify_domain(info):
             "actual_loan_amount":loan_needed}
 
 def generate_initial_payment_domain(info):
-    loan_amount = float(info.get("loan_amount"))
-
     # Default loan is for 5 years, so 60 months initially.
-    monthly_payment = round(loan_amount / 60, 2)
+    monthly_payment = round(info / 60, 2)
 
-    return {"loan_amount":loan_amount,
+    return {"loan_amount":info,
             "monthly_payment":monthly_payment}
 
 def generate_required_payment_domain(info):

@@ -39,23 +39,6 @@ def get_all_transactions_domain(user_id):
         transactions.append(transaction_json)
     return transactions
 
-def get_all_car_transactions_domain(info):
-    '''get all car transactions based on user id'''
-    user_id = get_user_id(info.get("email"))
-    car_transactions = []
-    car_transactions_table = get_car_transactions(user_id)
-    for transaction, car_id in car_transactions_table:
-        vin = get_car_vin_domain(car_id)
-        transaction_json = {
-            "transaction_id":transaction.transaction_id,
-            "vin":vin,
-            "amount": transaction.amount,
-            "type": transaction.type,
-            "company": transaction.company,
-        }
-        car_transactions.append(transaction_json)
-    return car_transactions
-
 def delete_all_transactions_domain(transaction_id):
     '''delete transaction and all sub transactions based on transaction id'''
     delete_all_transactions(transaction_id)
