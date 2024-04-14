@@ -5,7 +5,7 @@ Layer where loan functions resides
 '''
 # pylint: disable=import-error, no-name-in-module
 from decimal import Decimal
-from api.model.loan import Loan
+from financestub.api.model.approved_loan import Loan
 from data.loan_storage import (grab_approved_loan, delete_approved_loan,
                                store_new_loan, update_approval,
                                down_payment, pay_monthly_loan, update_loan)
@@ -27,12 +27,13 @@ def create_approval_domain(info):
 def approval_to_json(approval, email):
     '''convert approval to json'''
     return{
+        "request_id":approval.request_id,
         "email":email,
+        "vin":approval.vin,
         "apr":approval.apr,
-        "credit_score":approval.credit_score,
-        "loan_amount":approval.loan_amount,
+        "initial_loan_amount":approval.initial_loan_amount,
+        "current_loan_amount":approval.current_loan_amount,
         "monthly_payment":approval.monthly_payment,
-        "approved":approval.approved,
         "created":approval.created,
         "last_updated":approval.last_updated
     }

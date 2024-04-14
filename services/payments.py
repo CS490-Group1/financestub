@@ -1,0 +1,59 @@
+from services.loans import get_approved_loan, loan_approved, monthly_payment
+from services.transactions import generate_car_transaction, generate_monthly_transaction
+from services.financestub_domain import (generate_initial_payment_domain,
+                                         validate_payment)
+
+
+def buy_car_full_domain(info):
+    response = validate_payment(info)
+    if response["isValid"] == 0:
+        return response
+    notes = f'Total warranty costs: {info.get("warranties_cost")}'
+    generate_car_transaction(info, response, notes)
+    return{
+        "status":"success",
+        "isValid":1,
+        "message":"Successfully created transaction for car",
+        'code':200
+    }
+
+def buy_car_loan_domain(info):
+    response = validate_payment(info)
+    if response["isValid"] == 0:
+        return response
+    monthly_payment = generate_initial_payment_domain(info.get("approved_loan")
+                                          ).get("monthly_payment")
+    notes = f'''
+            Down Payment amount: {info.get("down_payment")}
+            Total warranty costs: {info.get("warranties_cost")}
+            '''
+    generate_car_transaction(info, response, notes)
+    response = loan_approved(info, monthly_payment)
+    if response['code'] == 500:
+        return response
+    return{
+        "status":"success",
+        "isValid":1,
+        "message":"Successfully created transaction for car and approved loan",
+        'code':200
+    }
+
+def pay_loan_domain(info):
+    response = validate_payment(info)
+    if response["isValid"] == 0:
+        return response
+    monthly_payment(info)
+    notes = f'''Monthly payment: {info.get("amount")}'''
+    output = generate_monthly_transaction(info, response, notes)
+    get_approved_loan(info)
+    if output is None:
+        return{
+            'status':'fail',
+            'message':'Failed to generate monthly transaction',
+            "code":500
+        }
+    return{
+        'status':'success',
+        'message':'Successfully created monthly transaction',
+        "code":201
+    }

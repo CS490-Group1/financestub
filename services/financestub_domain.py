@@ -31,8 +31,12 @@ def check_loan_qualify_domain(info):
     
     # The threshold is only for 1 year, it needs to be * 5 for the course of 5 years.
     approved = 0 if (loan_needed > threshold * 5) else 1
+    if approved:
+        # generate request
+        pass
     return {"approved":approved,
-            "loan_approved":loan_needed}
+            "max_loan_amount":threshold,
+            "actual_loan_amount":loan_needed}
 
 def generate_initial_payment_domain(info):
     loan_amount = float(info.get("loan_amount"))
@@ -71,6 +75,12 @@ def errorResponse(message, errorType):
             "message":message,
             "errorType":errorType,
             "code":406}
+
+def validate_payment(info):
+    if info.get("type") == 0:
+        return validate_bank_payment_domain(info)
+    else:
+        return validate_card_payment_domain(info)
 
 def validate_credit_card(card_number: str) -> bool:
     """This function validates a credit card number."""
@@ -138,8 +148,7 @@ def validate_card_payment_domain(info):
         return errorResponse("Error, the CVC is not valid for American Express.", 6)
     return {"isValid":1,
             "message":"Card Payment Details Verified!",
-            "errorType":0,
-            "code":200}
+            "errorType":0}
 
 def validate_bank_payment_domain(info):
     bank = info.get("bank")
@@ -178,5 +187,4 @@ def validate_bank_payment_domain(info):
         return errorResponse("Error, not a valid routing number for PNC.", 4)
     return{"isValid":1,
             "message":"Bank Payment Details Verified!",
-            "errorType":0,
-            "code":200}
+            "errorType":0}

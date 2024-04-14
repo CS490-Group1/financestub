@@ -11,31 +11,26 @@ from data.alchemy_classes import (
     Transactions, Transactions_Cars,
     Transactions_Warranties, Transactions_Services)
 
-def store_car_transaction(new_transaction, car_id, warranties):
+def store_car_transaction(new_transaction, info, notes):
     '''store car transaction based on passed in params'''
     created_id = 0
     time = datetime.now()
     transaction = Transactions(
-        user_id=new_transaction.user_id,
+        email=new_transaction.email,
+        vin=new_transaction.vin,
         amount=new_transaction.amount,
-        type=new_transaction.type,
+        transaction_type=new_transaction.transaction_type,
+        payment_type=new_transaction.payment_type,
         company=new_transaction.company,
         payment_method=new_transaction.payment_method,
         created=time,
-        last_updated=time, notes=''
+        last_updated=time, notes=notes
     )
-
-    transaction_car = Transactions_Cars(
-        car_id=car_id,
-        created=time,
-        last_updated=time, notes=''
-    )
-    transaction_car.transactions = transaction
 
     transaction_warranties = []
-    for warranty in warranties:
+    for warranty in info.get("warranties"):
         transaction_warranty = Transactions_Warranties(
-            warranty_id = warranty,
+            warranty_name = warranty,
             created=time,
             last_updated=time, notes=''
         )
@@ -44,14 +39,13 @@ def store_car_transaction(new_transaction, car_id, warranties):
 
     with Session(engine) as session:
         session.add(transaction)
-        session.add(transaction_car)
         for transaction_warranty in transaction_warranties:
             session.add(transaction_warranty)
         session.commit()
         created_id = transaction.transaction_id
     return created_id
 
-def store_monthly_transaction(new_transaction):
+def store_monthly_transaction(new_transaction, notes):
     '''store monthly transaction based on passed in info'''
     created_id = 0
     time = datetime.now()
@@ -62,7 +56,7 @@ def store_monthly_transaction(new_transaction):
         company=new_transaction.company,
         payment_method=new_transaction.payment_method,
         created=time,
-        last_updated=time, notes=''
+        last_updated=time, notes=notes
     )
 
     with Session(engine) as session:

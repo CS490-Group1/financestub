@@ -8,6 +8,7 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.append(parent_dir)
 
 # pylint: disable=wrong-import-position
+from payment_app import buy_car_full_app, buy_car_loan_app, pay_loan_app
 from loan_app import (create_approval_app, get_approved_loan_app,
                     delete_approved_loan_app, update_approval_loan_app)
 from financestub_app import (check_loan_qualify_app, generate_apr_credit_score_app,
@@ -39,15 +40,35 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 app.register_blueprint(swaggerui_blueprint)
 
 ## This is going to be a simple financal stub for the online car dealership ##
+@app.post("/buy/car/full")
+def handle_buy_car_full():
+    '''handles buying car at full price'''
+    info = request.json
+    response = buy_car_full_app(info)
+    return jsonify(response), response["code"]
+
+@app.post("/buy/car/loan")
+def handle_buy_car_full():
+    '''handles buying car at a down payment'''
+    info = request.json
+    response = buy_car_loan_app(info)
+    return jsonify(response), response["code"]
 
 @app.get("/creditcheck")
 def creditCheck():
-    '''generate apr from random credit score'''
     response = generate_apr_credit_score_app()
     return jsonify(response), 200
 
+@app.post("/pay/loan")
+def handle_pay_loan():
+    '''pay loan based on amount'''
+    info=response.json
+    response = pay_loan_app(info)
+    return jsonify(response), response["code"]
+
 @app.post("/loanqualification")
 def loanQualification():
+    '''checks if the user qualifies for a loan'''
     info = request.json
     response = check_loan_qualify_app(info)
     return jsonify(response), 200
