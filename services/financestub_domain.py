@@ -46,15 +46,15 @@ def generate_initial_payment_domain(info):
             "monthly_payment":monthly_payment}
 
 def generate_required_payment_domain(info):
-    loan_amount = float(info.get("loan_amount"))
-    apr = float(info.get("apr"))
-    created = (info.get("created"))
-    last_updated = (info.get("last_updated"))
+    loan_amount = float(info["current_loan_amount"])
+    apr = float(info["apr"])
+    created = (info["created"])
+    last_updated = (info["last_updated"])
 
     # Calculate Remaining Months For Loan
-    f = '%Y-%m-%d %H:%M:%S'
-    created_datetime = datetime.strptime(created, f)
-    last_updated_datetime = datetime.strptime(last_updated, f)
+    # f = '%Y-%m-%d %H:%M:%S'
+    created_datetime = created
+    last_updated_datetime = last_updated
 
     # Loan is due 5 years after it was created.
     months_paid = last_updated_datetime - created_datetime
@@ -75,7 +75,7 @@ def errorResponse(message, errorType):
             "code":406}
 
 def validate_payment(info):
-    if info.get("type") == 0:
+    if info.get("payment_type") == 0:
         return validate_bank_payment_domain(info)
     else:
         return validate_card_payment_domain(info)
@@ -103,7 +103,7 @@ def validate_credit_card(card_number: str) -> bool:
     return checkSum % 10 == 0
 
 def validate_card_payment_domain(info):
-    card_company = info.get("card_company")
+    card_company = info.get("company")
     card_num = ''.join(info.get("card_num").split())
     card_exp = info.get("card_exp")
     card_cvc = info.get("card_cvc")
@@ -146,10 +146,11 @@ def validate_card_payment_domain(info):
         return errorResponse("Error, the CVC is not valid for American Express.", 6)
     return {"isValid":1,
             "message":"Card Payment Details Verified!",
+            "payment_method":info.get("card_num")[-4:],
             "errorType":0}
 
 def validate_bank_payment_domain(info):
-    bank = info.get("bank")
+    bank = info.get("company")
     account_number = info.get("account_number")
     routing_number = info.get("routing_number")
 
@@ -185,4 +186,5 @@ def validate_bank_payment_domain(info):
         return errorResponse("Error, not a valid routing number for PNC.", 4)
     return{"isValid":1,
             "message":"Bank Payment Details Verified!",
+            "payment_method":info.get("account_number")[-4:],
             "errorType":0}

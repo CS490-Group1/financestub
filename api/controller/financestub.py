@@ -9,6 +9,7 @@ sys.path.append(parent_dir)
 
 # pylint: disable=wrong-import-position
 from payment_app import buy_car_full_app, buy_car_loan_app, incur_interest_app, pay_loan_app, request_create_app
+from approved_app import get_user_approved_loan_app
 
 app = Flask(__name__)
 
@@ -50,7 +51,7 @@ def handle_buy_car_full():
     return jsonify(response), response["code"]
 
 @app.post("/buy/car/loan")
-def handle_buy_car_full():
+def handle_buy_car_loan():
     '''handles buying car at a down payment'''
     info = request.json
     response = buy_car_loan_app(info)
@@ -59,7 +60,7 @@ def handle_buy_car_full():
 @app.patch("/pay/loan")
 def handle_pay_loan():
     '''pay loan based on amount'''
-    info=response.json
+    info=request.json
     response = pay_loan_app(info)
     return jsonify(response), response["code"]
 
@@ -78,6 +79,13 @@ def handle_incur_interest():
     '''incur interest when month passes'''
     info=request.json
     response = incur_interest_app(info)
+    return jsonify(response), 200
+
+@app.post("/get/approved/loan")
+def handle_get_user_approved_loan():
+    '''get approved loan related to user'''
+    info = request.json
+    response = get_user_approved_loan_app(info)
     return jsonify(response), 200
 
 if __name__ == "__main__":

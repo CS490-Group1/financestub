@@ -8,7 +8,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 from data.alchemy_setup import engine
 from data.alchemy_classes import (
-    Transactions, Transactions_Cars,
+    Transactions,
     Transactions_Warranties, Transactions_Services)
 
 def store_car_transaction(new_transaction, info, notes):
@@ -50,9 +50,11 @@ def store_monthly_transaction(new_transaction, notes):
     created_id = 0
     time = datetime.now()
     transaction = Transactions(
-        user_id=new_transaction.user_id,
+        email=new_transaction.email,
+        vin=new_transaction.vin,
         amount=new_transaction.amount,
-        type=new_transaction.type,
+        transaction_type=new_transaction.transaction_type,
+        payment_type=new_transaction.payment_type,
         company=new_transaction.company,
         payment_method=new_transaction.payment_method,
         created=time,
@@ -75,29 +77,9 @@ def get_transactions(email):
         ).all()
     return result
 
-def get_car_transactions(email):
-    '''get car transactions based on user id'''
-    with Session(engine) as session:
-        result = session.query(
-            Transactions, Transactions_Cars.vin
-        ).join(
-            Transactions_Cars
-        ).filter(
-            Transactions.email == email
-        ).all()
-    return result
-
 def delete_all_transactions(transaction_id):
     '''delete all transactions and sub transactions based on transaction id'''
     with Session(engine) as session:
-        car_transaction = session.query(
-            Transactions_Cars
-        ).filter(
-            Transactions_Cars.transaction_id == transaction_id
-        ).first()
-        if car_transaction:
-            session.delete(car_transaction)
-
         service_transactions = session.query(
             Transactions_Services
         ).filter(

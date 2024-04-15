@@ -7,7 +7,7 @@ Layer where transactions functions resides
 from api.model.transaction import Transaction
 from data.transaction_storage import (store_car_transaction,
                     store_monthly_transaction, get_transactions,
-                    get_car_transactions, delete_all_transactions)
+                    delete_all_transactions)
 
 def generate_car_transaction(info, response, notes):
     '''generate car transactions based on passed in info'''
@@ -19,9 +19,9 @@ def generate_car_transaction(info, response, notes):
 
 def generate_monthly_transaction(info, response, notes):
     '''generate monthly transaction based on passed in info'''
-    new_transaction = Transaction(info.get("email"), info.get("vin"), info.get("total"),
-                                info.get("transaction_type"), info.get("payment_type"),
-                                info.get("company"), response["payment_method"])
+    new_transaction = Transaction(info.get("email"), info.get("vin"), info.get("amount"),
+                                1, info.get("payment_type"), info.get("company"),
+                                response["payment_method"])
     monthly_transaction_id = store_monthly_transaction(new_transaction, notes)
     return monthly_transaction_id
 

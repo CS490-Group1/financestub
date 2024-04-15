@@ -31,16 +31,57 @@ def create_request(request):
         session.add(request)
         session.commit()
 
+def get_last_request(info):
+    '''get last request, regardless'''
+    with Session(engine) as session:
+        result=session.query(Loan_Requests
+        ).filter(
+            Loan_Requests.email==info.get('email')
+        ).order_by(
+            desc(Loan_Requests.created)
+        ).first()
+    return result
+
 def get_recent_request(info):
     '''get recent request'''
     with Session(engine) as session:
-        result=session.query(Loan_Requests.request_id
+        result=session.query(Loan_Requests
         ).filter(
             and_(
             Loan_Requests.email==info.get('email'),
-            Loan_Requests.approved == 1
+            Loan_Requests.approved == 1,
+            Loan_Requests.notes==''
             )
         ).order_by(
             desc(Loan_Requests.created)
         ).first()
     return result
+
+def reject_pending(request_id):
+    with Session(engine) as session:
+        pendings = session.query(Loan_Requests
+            ).filter(
+                and_(
+                    Loan_Requests.request_id != request_id,
+                    Loan_Requests.approved == 1
+                )
+            ).all()
+        for pending in pendings:
+            time = datetime.now()
+            pending.notes="rejected"
+            pending.last_updated = time
+            session.query(Loan_Requests
+                ).filter(
+                    Loan_Requests.request_id==pending.request_id
+                ).update({
+                    Loan_Requests.notes: pending.notes,
+                    Loan_Requests.last_updated: pending.last_updated
+                })
+
+def update_request(status, request_id):
+    time = datetime.now()
+    with Session(engine) as session:
+        session.query(Loan_Requests).filter(
+            Loan_Requests.request_id==request_id
+        ).update({Loan_Requests.notes: status,
+                  Loan_Requests.last_updated:time})

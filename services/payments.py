@@ -1,22 +1,27 @@
-from services.financestub_calls import create_request
-from services.approved_loans import create_approved_loan_domain, get_approved_loan, loan_approved, monthly_payment, update_loan_domain
+from services.request_loans import create_request_domain
+from services.approved_loans import create_approved_loan_domain, get_approved_loan, monthly_payment, update_loan_domain
 from services.transactions import generate_car_transaction, generate_monthly_transaction
-from services.financestub_domain import (check_loan_qualify_domain, generate_initial_payment_domain,
+from services.financestub_domain import (check_loan_qualify_domain,
                                          validate_payment)
 
 def request_create_domain(info):
-    approved = get_approved_loan(info)
+    approved_loan = get_approved_loan(info)
     response = check_loan_qualify_domain(info)
-    create_request(info, response, approved)
+    approved = response["approved"]
+    if approved_loan:
+        approved = 0
+    create_request_domain(info, response, approved)
     if response["approved"]:
         return{
             'status':'success',
             'message':'Approve request for loan',
+            "approved":response["approved"],
             'code':201
         }
     return{
         'status':'fail',
         'message':'Fail to approve request for loan',
+        "approved":response["approved"],
         'code':401
     }
 
@@ -25,6 +30,7 @@ def buy_car_full_domain(info):
     if response["isValid"] == 0:
         return response
     notes = f'''
+            Car Price: {info.get("car_price")}
             Total warranty costs: {info.get("warranties_cost")}
             5% Tax
             '''
@@ -47,9 +53,6 @@ def buy_car_loan_domain(info):
             5% Tax
             '''
     generate_car_transaction(info, response, notes)
-    response = loan_approved(info, monthly_payment)
-    if response['code'] == 500:
-        return response
     return{
         "status":"success",
         "isValid":1,
@@ -78,7 +81,7 @@ def pay_loan_domain(info):
 
 def incur_interest_domain(info):
     result = update_loan_domain(info)
-    if result is None:
+    if not result:
         return {
             'status':'fail',
             'message':'Cannot successfully change interest loan',

@@ -37,7 +37,7 @@ def store_approved_loan(new_approved):
     with Session(engine) as session:
         session.add(approval)
         session.commit()
-        created_id = approval.approval_id
+        created_id = approval.loan_id
     return created_id
 
 def delete_approved_loan(info):
@@ -69,7 +69,9 @@ def pay_monthly_loan(total, info):
             Approved_Loans.email==info.get("email")
         ).update(loan)
         session.commit()
-    return 'pass'
+        result = session.query(Approved_Loans).filter(
+            Approved_Loans.email==info.get("email"))
+    return result
 
 def update_loan(output, email):
     '''update loan based on new amount due to incurred interest'''
