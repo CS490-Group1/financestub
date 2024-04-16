@@ -67,13 +67,13 @@ def store_monthly_transaction(new_transaction, notes):
         created_id = transaction.transaction_id
     return created_id
 
-def get_transactions(email):
+def get_transactions(info):
     '''get transactions based on user id'''
     with Session(engine) as session:
         result = session.query(
             Transactions
         ).filter(
-            Transactions.email == email,
+            Transactions.email == info.get("email"),
         ).all()
     return result
 

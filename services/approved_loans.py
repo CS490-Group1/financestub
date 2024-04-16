@@ -1,14 +1,15 @@
 '''
-Loans Domain
+Approved Loans Domain
 
-Layer where loan functions resides
+Layer where approved loans functions resides
 '''
 # pylint: disable=import-error, no-name-in-module
 from decimal import Decimal
 from api.model.approved_loan import Approved_Loan
 from data.approved_loan_storage import (grab_approved_loan, delete_approved_loan,
                                store_approved_loan, pay_monthly_loan, update_loan)
-from services.request_loans import get_recent_request_domain, reject_pending_domain, update_request_domain
+from services.request_loans import (get_recent_request_domain, reject_pending_domain,
+                                    update_request_domain)
 from services.financestub_domain import (generate_initial_payment_domain,
                                         generate_required_payment_domain)
 

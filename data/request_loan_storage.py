@@ -9,7 +9,7 @@ from sqlalchemy import and_, desc
 from sqlalchemy.orm import Session
 from data.alchemy_setup import engine
 from data.alchemy_classes import Loan_Requests
-def create_request(request):
+def create_request(request, notes):
     '''store new loan based on passed in info'''
     time = datetime.now()
     request = Loan_Requests(
@@ -24,7 +24,7 @@ def create_request(request):
         actual_loan_amount=request.actual_loan_amount,
         approved=request.approved,
         created=time,
-        last_updated=time, notes=''
+        last_updated=time, notes=notes
     )
 
     with Session(engine) as session:
@@ -58,6 +58,7 @@ def get_recent_request(info):
     return result
 
 def reject_pending(request_id):
+    '''rejects all pending requests that are approved'''
     with Session(engine) as session:
         pendings = session.query(Loan_Requests
             ).filter(
@@ -79,9 +80,20 @@ def reject_pending(request_id):
                 })
 
 def update_request(status, request_id):
+    '''update request notes with status'''
     time = datetime.now()
     with Session(engine) as session:
         session.query(Loan_Requests).filter(
             Loan_Requests.request_id==request_id
         ).update({Loan_Requests.notes: status,
                   Loan_Requests.last_updated:time})
+
+def clear_user_requests(info):
+    '''clear all user requests'''
+    with Session(engine) as session:
+        query = session.query(Loan_Requests).filter(
+            Loan_Requests.email == info.get("email")
+        ).all()
+        for request in query:
+            session.delete(request)
+            session.commit()
