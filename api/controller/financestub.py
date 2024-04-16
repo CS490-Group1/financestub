@@ -2,14 +2,13 @@ import sys
 import os
 from flask import Flask, request, jsonify
 from flask_swagger_ui import get_swaggerui_blueprint
-from datetime import datetime
 
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.append(parent_dir)
 
 # pylint: disable=wrong-import-position
-from payment_app import buy_car_full_app, buy_car_loan_app, incur_interest_app, pay_loan_app, request_create_app
-from approved_app import get_user_approved_loan_app
+from payment_app import buy_car_full_app, buy_car_loan_app, clear_user_requests_app, clear_user_transactions_app, incur_interest_app, pay_loan_app, request_create_app
+from loan_app import get_finance_report_app, get_user_approved_loan_app
 
 app = Flask(__name__)
 
@@ -87,6 +86,27 @@ def handle_get_user_approved_loan():
     info = request.json
     response = get_user_approved_loan_app(info)
     return jsonify(response), 200
+
+@app.post("/get/finance/report")
+def handle_get_finance_report():
+    '''get finance report related to user'''
+    info = request.json
+    response = get_finance_report_app(info)
+    return jsonify(response), 200
+
+@app.post("/clean/user/transactions")
+def handle_clear_user_transactions():
+    '''clear user transactions'''
+    info=request.json
+    clear_user_transactions_app(info)
+    return jsonify({"status":"success"})
+
+@app.post("/clean/user/requests")
+def handle_clear_user_requests():
+    '''clear user requests'''
+    info=request.json
+    clear_user_requests_app(info)
+    return jsonify({"status":"success"})
 
 if __name__ == "__main__":
     app.run(debug=True, port=8001)

@@ -1,3 +1,5 @@
+from services.request_loans import clear_user_requests_domain
+from services.transactions import delete_all_transactions_domain
 from services.payments import (buy_car_full_domain, buy_car_loan_domain, incur_interest_domain,
                                pay_loan_domain, request_create_domain,
                                )
@@ -21,3 +23,11 @@ def request_create_app(info):
 def incur_interest_app(info):
     '''incur interest once month past'''
     return incur_interest_domain(info)
+
+def clear_user_transactions_app(info):
+    '''clear user transactions'''
+    return delete_all_transactions_domain(info)
+
+def clear_user_requests_app(info):
+    '''clear user requests'''
+    return clear_user_requests_domain(info)

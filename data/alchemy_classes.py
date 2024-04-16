@@ -7,8 +7,8 @@ Place where all ORM mappings are established for later querying use
 from sqlalchemy import (Column, Integer, String,
                         DECIMAL, TIMESTAMP, ForeignKey,
                         Float)
-from data.alchemy_setup import Base
 from sqlalchemy.orm import relationship
+from data.alchemy_setup import Base
 
 class Loan_Requests(Base):
     '''Loan Requests Class ORM'''

@@ -1,16 +1,29 @@
+'''
+Payment Domain
+
+Layer where payment functions resides
+'''
+# pylint: disable=import-error
 from services.request_loans import create_request_domain
-from services.approved_loans import create_approved_loan_domain, get_approved_loan, monthly_payment, update_loan_domain
-from services.transactions import generate_car_transaction, generate_monthly_transaction
+from services.approved_loans import (create_approved_loan_domain, get_approved_loan,
+                                    monthly_payment, update_loan_domain)
+from services.transactions import (generate_car_transaction,
+                                   generate_monthly_transaction)
 from services.financestub_domain import (check_loan_qualify_domain,
                                          validate_payment)
 
 def request_create_domain(info):
+    '''create request with info'''
     approved_loan = get_approved_loan(info)
     response = check_loan_qualify_domain(info)
     approved = response["approved"]
+    notes = ""
+    if not approved:
+        notes = "Does not qualify loan"
     if approved_loan:
         approved = 0
-    create_request_domain(info, response, approved)
+        notes = "Already has loan active"
+    create_request_domain(info, response, approved, notes)
     if response["approved"]:
         return{
             'status':'success',
@@ -26,6 +39,7 @@ def request_create_domain(info):
     }
 
 def buy_car_full_domain(info):
+    '''buy car with full payment'''
     response = validate_payment(info)
     if response["isValid"] == 0:
         return response
@@ -43,6 +57,7 @@ def buy_car_full_domain(info):
     }
 
 def buy_car_loan_domain(info):
+    '''buy car with loan'''
     response = validate_payment(info)
     if response["isValid"] == 0:
         return response
@@ -61,6 +76,7 @@ def buy_car_loan_domain(info):
     }
 
 def pay_loan_domain(info):
+    '''pay loan'''
     response = validate_payment(info)
     if response["isValid"] == 0:
         return response
@@ -80,6 +96,7 @@ def pay_loan_domain(info):
     }
 
 def incur_interest_domain(info):
+    '''incur interest'''
     result = update_loan_domain(info)
     if not result:
         return {

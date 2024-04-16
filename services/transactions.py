@@ -11,7 +11,7 @@ from data.transaction_storage import (store_car_transaction,
 
 def generate_car_transaction(info, response, notes):
     '''generate car transactions based on passed in info'''
-    
+
     new_transaction = Transaction(info.get("email"), info.get("vin"), info.get("total"),
                                 info.get("transaction_type"), info.get("payment_type"),
                                 info.get("company"), response["payment_method"])
@@ -25,10 +25,10 @@ def generate_monthly_transaction(info, response, notes):
     monthly_transaction_id = store_monthly_transaction(new_transaction, notes)
     return monthly_transaction_id
 
-def get_all_transactions_domain(user_id):
+def get_all_transactions_domain(info):
     '''get all transactions based on user id'''
     transactions = []
-    transactions_table = get_transactions(user_id)
+    transactions_table = get_transactions(info)
     for transaction in transactions_table:
         transaction_json = {
             "transaction_id":transaction.transaction_id,
@@ -39,6 +39,8 @@ def get_all_transactions_domain(user_id):
         transactions.append(transaction_json)
     return transactions
 
-def delete_all_transactions_domain(transaction_id):
+def delete_all_transactions_domain(info):
     '''delete transaction and all sub transactions based on transaction id'''
-    delete_all_transactions(transaction_id)
+    transactions_table = get_transactions(info)
+    for transaction in transactions_table:
+        delete_all_transactions(transaction.transaction_id)
