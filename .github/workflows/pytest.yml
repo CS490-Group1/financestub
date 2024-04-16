@@ -27,17 +27,6 @@ jobs:
           python -m pip install --upgrade pip  
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install coverage
-      - name: Checkout financestub repository
-        uses: actions/checkout@v3
-        with:
-          repository: CS490-Group1/financestub
-          path: financestub
-
-      - name: Run financestub
-        run: |
-          cd financestub/api
-          python financestub.py &
-        continue-on-error: true
       - name: Test with pytest  
         run: |
           coverage run -m pytest  -v -s
