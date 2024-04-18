@@ -20,7 +20,7 @@ def create_request_domain(info, response, approved, notes):
             "apr":request.apr
         }
     new_request = Request_Loan(info.get("email"), output["credit_score"], output["apr"],
-                                info.get("vin"), info.get("income"), info.get("car_price"),
+                                info.get("vin"), info.get("income"), info.get("total"),
                                 info.get("down_payment"), response.get("max_loan_amount"),
                                 response.get("actual_loan_amount"), approved)
     create_request(new_request, notes)
