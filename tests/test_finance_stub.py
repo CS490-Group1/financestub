@@ -47,8 +47,8 @@ def test_get_loan_qual_success(client):
     response = client.post("/create/request", json={
         "email":"creamsicle@gmail.com",
         "vin":"JHMFA3F29AS538797",
-        "car_price": 43250.00,
-        "income": 150000,
+        "total": 142700.00,
+        "income": 300000,
         "down_payment": 10000
     })
     assert response.json['approved'] == 1
@@ -59,7 +59,7 @@ def test_get_loan_qual_fail(client):
     response = client.post("/create/request", json={
         "email":"creamsicle@gmail.com",
         "vin":"3D73Y3CL5BG630193",
-        "car_price":42500.00,
+        "total":142700.00,
         "income": 1000,
         "down_payment": 10000
     })
