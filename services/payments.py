@@ -58,6 +58,15 @@ def buy_car_full_domain(info):
 
 def buy_car_loan_domain(info):
     '''buy car with loan'''
+    result = get_approved_loan(info)
+    if result:
+        return{
+            "status":"fail",
+            "message":'''Something did not go as planned.
+            Cannot create an approved loan when there is an
+            existing loan.''',
+            "code":500
+        }
     response = validate_payment(info)
     if response["isValid"] == 0:
         return response

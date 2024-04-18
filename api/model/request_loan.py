@@ -8,7 +8,7 @@ Later for ORM mapping
 class Request_Loan:
     '''Loan class'''
     def __init__(self, email, credit_score, apr, vin,
-                  income=0, car_price=0, down_payment=0,
+                  income=0, total=0, down_payment=0,
                   max_loan_amount=0, actual_loan_amount=0,
                   approved=0):
         self.email = email
@@ -16,7 +16,7 @@ class Request_Loan:
         self.apr = apr
         self.vin = vin
         self.income = income
-        self.car_price = car_price
+        self.total = total
         self.down_payment = down_payment
         self.max_loan_amount = max_loan_amount
         self.actual_loan_amount = actual_loan_amount

@@ -28,7 +28,7 @@ def generate_apr_credit_score_domain():
 def check_loan_qualify_domain(info):
     '''check if loan qualifies'''
     income = float(info.get("income"))
-    car_price = float(info.get("car_price"))
+    car_price = float(info.get("total"))
     down_payment = float(info.get("down_payment"))
 
     loan_needed = car_price - down_payment

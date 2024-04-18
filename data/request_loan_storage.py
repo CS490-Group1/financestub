@@ -18,7 +18,7 @@ def create_request(request, notes):
         apr=request.apr,
         vin=request.vin,
         income=request.income,
-        car_price=request.car_price,
+        car_price=request.total,
         down_payment=request.down_payment,
         max_loan_amount=request.max_loan_amount,
         actual_loan_amount=request.actual_loan_amount,
