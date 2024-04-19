@@ -52,7 +52,7 @@ def test_get_loan_qual_success(client):
         "down_payment": 10000
     })
     assert response.json['approved'] == 1
-    assert response.status_code == 201
+    assert response.status_code == 202
 
 def test_get_loan_qual_fail(client):
     '''test check if loan qualification fails'''
@@ -64,7 +64,7 @@ def test_get_loan_qual_fail(client):
         "down_payment": 10000
     })
     assert response.json['approved'] == 0
-    assert response.status_code == 401
+    assert response.status_code == 201
 
 def test_buy_car_loan_bank(client):
     '''test buying car with loan using bank'''
@@ -81,6 +81,24 @@ def test_buy_car_loan_bank(client):
         "routing_number":"021200339",
         "total":30000,
         "down_payment": 30000
+    })
+    assert response.status_code == 200
+
+def test_buy_services(client):
+    '''test buying car with loan using bank'''
+    response = client.post("/buy/services", json={
+        "email":"creamsicle@gmail.com",
+        "vin":"JHMFA3F29AS538797",
+        "services":["Tire Rotation and Alignment",
+                    "Brake Inspection"],
+        "payment_type":0,
+        "transaction_type":2,
+        "company":"Bank of America",
+        "account_number":"123123123123",
+        "routing_number":"021200339",
+        "total":21000,
+        "services_cost":40000,
+        "warranties_discount": 20000
     })
     assert response.status_code == 200
 
@@ -142,7 +160,7 @@ def test_get_finance_report(client):
 
 def test_clean_user_transactions(client):
     '''test clean user transactions'''
-    response = client.post("/get/finance/report", json={
+    response = client.post("/clean/user/transactions", json={
         "email":"creamsicle@gmail.com"
     })
     assert response.status_code == 200

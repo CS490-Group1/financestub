@@ -30,13 +30,13 @@ def request_create_domain(info):
             'status':'success',
             'message':'Approve request for loan',
             "approved":response["approved"],
-            'code':201
+            'code':202
         }
     return{
         'status':'fail',
         'message':'Fail to approve request for loan',
         "approved":response["approved"],
-        'code':401
+        'code':201
     }
 
 def buy_car_full_domain(info):
