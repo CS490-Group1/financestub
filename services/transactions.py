@@ -53,8 +53,8 @@ def generate_services_transaction(info, response, notes):
 #             if response:
 #                 warranties = []
 #                 for warranty in response.warranty_name:
-#                     warranties = 
-        
+#                     warranties =
+
 #         transactions.append(transaction_json)
 #     return transactions
 
