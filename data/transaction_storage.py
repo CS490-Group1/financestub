@@ -150,5 +150,5 @@ def get_services_in_transaction(transaction_id):
 def get_warranties_in_transaction(transaction_id):
     '''Find all warranties related to a specific transaction_id'''
     with Session(engine) as session:
-        warranties_in_transaction = session.query(Transactions_Warranties).filter(Transactions_Services.transaction_id == transaction_id).all()
+        warranties_in_transaction = session.query(Transactions_Warranties).filter(Transactions_Warranties.transaction_id == transaction_id).all()
     return warranties_in_transaction
