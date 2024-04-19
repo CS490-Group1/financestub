@@ -7,7 +7,8 @@ Layer where transactions functions resides
 from api.model.transaction import Transaction
 from data.transaction_storage import (store_car_transaction,
                     store_monthly_transaction, get_transactions,
-                    delete_all_transactions, store_service_transaction)
+                    delete_all_transactions, store_service_transaction,
+                    get_warranties_in_transaction, get_services_in_transaction)
 
 def generate_car_transaction(info, response, notes):
     '''generate car transactions based on passed in info'''
@@ -32,31 +33,41 @@ def generate_services_transaction(info, response, notes):
                                 info.get("company"), response["payment_method"])
     store_service_transaction(new_transaction, info, notes)
 
-# def get_all_transactions_domain(info):
-#     '''get all transactions based on user id'''
-#     transactions = []
-#     transactions_table = get_transactions(info)
-#     for transaction in transactions_table:
-#         transaction_json = {
-#             "transaction_id":transaction.transaction_id,
-#             "amount": transaction.amount,
-#             "transaction_type": transaction.transaction_type,
-#             "company": transaction.company,
-#             "notes":transaction.notes
-#         }
-#         if transaction.transaction_type == 3:
-#             response = get_services_transactions(
-#             transaction.transaction_id)
-#         else:
-#             response = get_warranties_transactions(
-#             transaction.transaction_id)
-#             if response:
-#                 warranties = []
-#                 for warranty in response.warranty_name:
-#                     warranties =
+def get_all_transactions_domain(info):
+    '''get all transactions based on user id'''
+    transactions = []
+    transactions_table = get_transactions(info)
+    for transaction in transactions_table:
+        warranties = []
+        services = []
 
-#         transactions.append(transaction_json)
-#     return transactions
+        if transaction.transaction_type == 3:
+            services_in_transaction = get_services_in_transaction(transaction.transaction_id)
+            if len(services_in_transaction) != 0:
+                for serv in services_in_transaction:
+                    services.append(serv.service_name)
+        else:
+            warranties_in_transaction = get_warranties_in_transaction(transaction.transaction_id)
+            if len(warranties_in_transaction) != 0:
+                for warranty in warranties_in_transaction:
+                    warranties.append(warranty.warranty_name)
+
+        transaction_json = {
+            "transaction_id":transaction.transaction_id,
+            "vin": transaction.vin,
+            "amount": transaction.amount,
+            "transaction_type": transaction.transaction_type,
+            "payment_type": transaction.payment_type,
+            "company": transaction.company,
+            "payment_method": transaction.payment_method,
+            "created": transaction.created,
+            "notes": transaction.notes,
+            "warranties": warranties,
+            "services": services
+        }
+
+        transactions.append(transaction_json)
+    return transactions
 
 def delete_all_transactions_domain(info):
     '''delete transaction and all sub transactions based on transaction id'''

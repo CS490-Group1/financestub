@@ -35,3 +35,7 @@ def clear_user_transactions_app(info):
 def clear_user_requests_app(info):
     '''clear user requests'''
     return clear_user_requests_domain(info)
+
+def get_user_transactions_app(info):
+    '''get transaction history of user'''
+    return get_user_transactions_domain(info)

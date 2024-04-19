@@ -140,3 +140,15 @@ def delete_all_transactions(transaction_id):
         if transaction:
             session.delete(transaction)
         session.commit()
+
+def get_services_in_transaction(transaction_id):
+    '''Find all services related to a specific transaction_id'''
+    with Session(engine) as session:
+        services_in_transaction = session.query(Transactions_Services).filter(Transactions_Services.transaction_id == transaction_id).all()
+    return services_in_transaction
+
+def get_warranties_in_transaction(transaction_id):
+    '''Find all warranties related to a specific transaction_id'''
+    with Session(engine) as session:
+        warranties_in_transaction = session.query(Transactions_Warranties).filter(Transactions_Services.transaction_id == transaction_id).all()
+    return warranties_in_transaction

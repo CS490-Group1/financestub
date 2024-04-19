@@ -37,12 +37,12 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 app.register_blueprint(swaggerui_blueprint)
 
 ## This is going to be a simple financal stub for the online car dealership ##
-# @app.post("get/user/transactions")
-# def handle_get_user_transactions():
-#     '''handle get user transactions'''
-#     info = request.json
-#     response = get_user_transactions_app(info)
-#     return jsonify(response), 200
+@app.post("get/user/transactions")
+def handle_get_user_transactions():
+    '''handle get user transactions'''
+    info = request.json
+    response = get_user_transactions_app(info)
+    return jsonify(response), 200
 
 @app.post("/buy/car/full")
 def handle_buy_car_full():
