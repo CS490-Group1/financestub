@@ -45,6 +45,40 @@ def store_car_transaction(new_transaction, info, notes):
         created_id = transaction.transaction_id
     return created_id
 
+def store_service_transaction(new_transaction, info, notes):
+    '''store service transaction based on passed in params'''
+    created_id = 0
+    time = datetime.now()
+    transaction = Transactions(
+        email=new_transaction.email,
+        vin=new_transaction.vin,
+        amount=new_transaction.amount,
+        transaction_type=new_transaction.transaction_type,
+        payment_type=new_transaction.payment_type,
+        company=new_transaction.company,
+        payment_method=new_transaction.payment_method,
+        created=time,
+        last_updated=time, notes=notes
+    )
+
+    transaction_services = []
+    for service in info.get("services"):
+        transaction_service = Transactions_Services(
+            service_name = service,
+            created=time,
+            last_updated=time, notes=''
+        )
+        transaction_service.transactions = transaction
+        transaction_services.append(transaction_service)
+
+    with Session(engine) as session:
+        session.add(transaction)
+        for transaction_service in transaction_services:
+            session.add(transaction_service)
+        session.commit()
+        created_id = transaction.transaction_id
+    return created_id
+
 def store_monthly_transaction(new_transaction, notes):
     '''store monthly transaction based on passed in info'''
     created_id = 0
