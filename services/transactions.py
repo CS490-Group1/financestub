@@ -34,7 +34,7 @@ def generate_services_transaction(info, response, notes):
     store_service_transaction(new_transaction, info, notes)
 
 def get_all_transactions_domain(info):
-    '''get all transactions based on user id'''
+    '''get all transactions based on user email'''
     transactions = []
     transactions_table = get_transactions(info)
     for transaction in transactions_table:

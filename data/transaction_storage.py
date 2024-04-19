@@ -102,7 +102,7 @@ def store_monthly_transaction(new_transaction, notes):
     return created_id
 
 def get_transactions(info):
-    '''get transactions based on user id'''
+    '''get transactions based on user email'''
     with Session(engine) as session:
         result = session.query(
             Transactions
