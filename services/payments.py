@@ -8,7 +8,8 @@ from services.request_loans import create_request_domain
 from services.approved_loans import (create_approved_loan_domain, get_approved_loan,
                                     monthly_payment, update_loan_domain)
 from services.transactions import (generate_car_transaction,
-                                   generate_monthly_transaction)
+                                    generate_services_transaction,
+                                    generate_monthly_transaction)
 from services.financestub_domain import (check_loan_qualify_domain,
                                          validate_payment)
 
@@ -81,6 +82,24 @@ def buy_car_loan_domain(info):
         "status":"success",
         "isValid":1,
         "message":"Successfully created transaction for car and approved loan",
+        'code':200
+    }
+
+def buy_services_domain(info):
+    '''buy services'''
+    response = validate_payment(info)
+    if response["isValid"] == 0:
+        return response
+    notes = f'''
+            Total service costs: {info.get("services_cost")}
+            Total warranty discount: {info.get("warranties_discount")}
+            5% Tax
+            '''
+    generate_services_transaction(info, response, notes)
+    return{
+        "status":"success",
+        "isValid":1,
+        "message":"Successfully created transaction for services",
         'code':200
     }
 

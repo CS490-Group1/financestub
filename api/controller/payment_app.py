@@ -1,7 +1,7 @@
 from services.request_loans import clear_user_requests_domain
 from services.transactions import delete_all_transactions_domain
 from services.payments import (buy_car_full_domain, buy_car_loan_domain, incur_interest_domain,
-                               pay_loan_domain, request_create_domain,
+                               pay_loan_domain, request_create_domain, buy_services_domain
                                )
 
 def buy_car_full_app(info):
@@ -11,6 +11,10 @@ def buy_car_full_app(info):
 def buy_car_loan_app(info):
     '''buy car with loan based on passed in info'''
     return buy_car_loan_domain(info)
+
+def buy_services_app(info):
+    '''buy services based on passed in info'''
+    return buy_services_domain(info)
 
 def pay_loan_app(info):
     '''pay loan based on info'''
