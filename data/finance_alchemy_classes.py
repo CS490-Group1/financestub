@@ -8,7 +8,7 @@ from sqlalchemy import (Column, Integer, String,
                         DECIMAL, TIMESTAMP, ForeignKey,
                         Float)
 from sqlalchemy.orm import relationship
-from data.alchemy_setup import Base
+from financestub.data.finance_alchemy_setup import Base
 
 class Loan_Requests(Base):
     '''Loan Requests Class ORM'''

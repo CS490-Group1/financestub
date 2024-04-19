@@ -6,8 +6,8 @@ Layer where all transaction related functions talk to the database
 # pylint: disable=import-error
 from datetime import datetime
 from sqlalchemy.orm import Session
-from data.alchemy_setup import engine
-from data.alchemy_classes import (
+from financestub.data.finance_alchemy_setup import engine
+from financestub.data.finance_alchemy_classes import (
     Transactions,
     Transactions_Warranties, Transactions_Services)
 
