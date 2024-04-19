@@ -6,8 +6,8 @@ Layer where all loan related functions talk to the database
 # pylint: disable=import-error
 from datetime import datetime
 from sqlalchemy.orm import Session
-from financestub.data.finance_alchemy_setup import engine
-from financestub.data.finance_alchemy_classes import Approved_Loans
+from data.finance_alchemy_setup import engine
+from data.finance_alchemy_classes import Approved_Loans
 
 def grab_approved_loan(info):
     '''grab approved loan based on user id'''

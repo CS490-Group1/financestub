@@ -7,8 +7,8 @@ Layer where all loan related functions talk to the database
 from datetime import datetime
 from sqlalchemy import and_, desc
 from sqlalchemy.orm import Session
-from financestub.data.finance_alchemy_setup import engine
-from financestub.data.finance_alchemy_classes import Loan_Requests
+from data.finance_alchemy_setup import engine
+from data.finance_alchemy_classes import Loan_Requests
 def create_request(request, notes):
     '''store new loan based on passed in info'''
     time = datetime.now()
