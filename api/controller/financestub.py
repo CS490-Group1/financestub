@@ -10,7 +10,7 @@ sys.path.append(parent_dir)
 from finance_payment_app import (buy_car_full_app, buy_car_loan_app, buy_services_app,
                          clear_user_requests_app, clear_user_transactions_app,
                          incur_interest_app, pay_loan_app, request_create_app,
-                         get_user_transactions_app)
+                         get_user_transactions_app, get_monthly_sales_report_app)
 from loan_app import get_finance_report_app, get_user_approved_loan_app
 
 app = Flask(__name__)
@@ -117,6 +117,12 @@ def handle_clear_user_requests():
     info=request.json
     clear_user_requests_app(info)
     return jsonify({"status":"success"})
+
+@app.post("get/monthly_sales_report")
+def handle_get_monthly_sales_report(info):
+    '''retrieves all sales information for given month and year'''
+    info=request.json
+    response = get_monthly_sales_report_app(info)
 
 if __name__ == "__main__":
     app.run(debug=True, port=8001)
