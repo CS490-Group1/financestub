@@ -118,7 +118,7 @@ def handle_clear_user_requests():
     clear_user_requests_app(info)
     return jsonify({"status":"success"})
 
-@app.post("get/monthly_sales_report")
+@app.post("/get/monthly_sales_report")
 def handle_get_monthly_sales_report(info):
     '''retrieves all sales information for given month and year'''
     info=request.json
