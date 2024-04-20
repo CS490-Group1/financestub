@@ -111,6 +111,22 @@ def get_transactions(info):
         ).all()
     return result
 
+def get_monthly_sales_report_transactions(info):
+    '''get transactions based on month selected'''
+    month = info.get("month")
+    year = info.get("year")
+    start_of_month = datetime(year, month, 1)
+    end_of_month = datetime(year, month + 1, 1) if month < 12 else datetime(year + 1, 1, 1)
+
+    with Session(engine) as session:
+        result = session.query(
+            Transactions
+        ).filter(
+            Transactions.last_updated >= start_of_month,
+            Transactions.last_updated < end_of_month
+        ).all()
+    return result
+
 def delete_all_transactions(transaction_id):
     '''delete all transactions and sub transactions based on transaction id'''
     with Session(engine) as session:
