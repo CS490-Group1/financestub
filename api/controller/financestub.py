@@ -1,6 +1,6 @@
 import sys
 import os
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 
