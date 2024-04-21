@@ -2,6 +2,7 @@ import sys
 import os
 from flask import Flask, request, jsonify
 from flask_swagger_ui import get_swaggerui_blueprint
+from flask_cors import CORS
 
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.append(parent_dir)
@@ -14,6 +15,7 @@ from finance_payment_app import (buy_car_full_app, buy_car_loan_app, buy_service
 from loan_app import get_finance_report_app, get_user_approved_loan_app
 
 app = Flask(__name__)
+CORS(app)
 
 SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
 API_URL = '/static/documentation.yaml'  # Our API url (can of course be a local resource)
