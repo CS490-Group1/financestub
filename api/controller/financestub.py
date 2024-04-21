@@ -8,11 +8,11 @@ parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.append(parent_dir)
 
 # pylint: disable=wrong-import-position
-# from finance_payment_app import (buy_car_full_app, buy_car_loan_app, buy_services_app,
-#                          clear_user_requests_app, clear_user_transactions_app,
-#                          incur_interest_app, pay_loan_app, request_create_app,
-#                          get_user_transactions_app, get_monthly_sales_report_app)
-# from loan_app import get_finance_report_app, get_user_approved_loan_app
+from finance_payment_app import (buy_car_full_app, buy_car_loan_app, buy_services_app,
+                         clear_user_requests_app, clear_user_transactions_app,
+                         incur_interest_app, pay_loan_app, request_create_app,
+                         get_user_transactions_app, get_monthly_sales_report_app)
+from loan_app import get_finance_report_app, get_user_approved_loan_app
 
 app = Flask(__name__)
 CORS(app)
