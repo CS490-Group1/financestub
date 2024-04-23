@@ -1,21 +1,16 @@
-
 "openapi": "3.0.3"
 "info":
   "title": "Foyota Haven - Finance Stub"
-  "description": "Finance Stub API Documentation"
+  "description": "Foyota Haven Finance Stub API Documentation"
   "version": "1.0.0"
 "tags":
-  -
-    "name": "Gets"
+  - "name": "Gets"
     "description": "Various GET requests for user information."
-  -
-    "name": "Buying"
+  - "name": "Buying"
     "description": "Everything regarding buying products."
-  -
-    "name": "Loans"
+  - "name": "Loans"
     "description": "Everything regarding loans."
-  -
-    "name": "Cleaning"
+  - "name": "Cleaning"
     "description": "Additional functionality to clean up database (mainly for Pytests)."
 "paths":
   "/get/user/transactions":
@@ -38,8 +33,7 @@
           "content":
             "application/json":
               "example":
-                -
-                  "amount": "88000.00"
+                - "amount": "88000.00"
                   "company": "Bank of America"
                   "created": "Tue, 16 Apr 2024 01:33:32 GMT"
                   "notes": "\nCar Price: 28000.0\nTotal warranty costs: 60000.0\n5% Tax\n"
@@ -135,8 +129,7 @@
             "application/json":
               "schema":
                 "example":
-                  -
-                    "amount": "88000.00"
+                  - "amount": "88000.00"
                     "company": "Bank of America"
                     "created": "Tue, 16 Apr 2024 01:33:32 GMT"
                     "notes": "\nCar Price: 28000.0\nTotal warranty costs: 60000.0\n5% Tax\n"
