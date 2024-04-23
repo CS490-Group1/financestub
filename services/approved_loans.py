@@ -54,7 +54,7 @@ def monthly_payment(info):
     response = get_approved_loan(info)
     total = Decimal(response['current_loan_amount']) - Decimal(info.get("amount"))
     pay_monthly_loan(total, response)
-    if not total:
+    if float(total) <= 0.00:
         update_request_domain(info, "paid")
         delete_approved_loan(info)
 
