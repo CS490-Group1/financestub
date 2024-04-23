@@ -1,0 +1,412 @@
+
+"openapi": "3.0.3"
+"info":
+  "title": "Foyota Haven - Finance Stub"
+  "description": "Finance Stub API Documentation"
+  "version": "1.0.0"
+"tags":
+  -
+    "name": "Gets"
+    "description": "Various GET requests for user information."
+  -
+    "name": "Buying"
+    "description": "Everything regarding buying products."
+  -
+    "name": "Loans"
+    "description": "Everything regarding loans."
+  -
+    "name": "Cleaning"
+    "description": "Additional functionality to clean up database (mainly for Pytests)."
+"paths":
+  "/get/user/transactions":
+    "post":
+      "tags":
+        - "Gets"
+      "summary": "Returns a list of customer's transaction history"
+      "description": "Customer's Transaction History"
+      "requestBody":
+        "description": "Send in customer's email for their transaction history."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "email": "customer@foyotahaven.com"
+        "required": true
+      "responses":
+        "200":
+          "description": "Successful operation"
+          "content":
+            "application/json":
+              "example":
+                -
+                  "amount": "88000.00"
+                  "company": "Bank of America"
+                  "created": "Tue, 16 Apr 2024 01:33:32 GMT"
+                  "notes": "\nCar Price: 28000.0\nTotal warranty costs: 60000.0\n5% Tax\n"
+                  "payment_method": "3123"
+                  "payment_type": 0
+                  "services": []
+                  "transaction_id": 111
+                  "transaction_type": 0
+                  "vin": "5N1AR1NB3BC680158"
+                  "warranties":
+                    - "Oil Changes"
+                    - "Tire Rotation and Alignment"
+  "/get/approved/loan":
+    "post":
+      "tags":
+        - "Gets"
+      "summary": "Returns loan information for a customer"
+      "description": "Customer's Loan Information"
+      "requestBody":
+        "description": "Send in a customer's email to see their approved loan information."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "email": "customer@foyotahaven.com"
+        "required": true
+      "responses":
+        "200":
+          "description": "Successful operation"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "apr": 15
+                  "created": "Fri, 19 Apr 2024 16:18:48 GMT"
+                  "current_loan_amount": "38500.00"
+                  "email": "jv456@njit.edu"
+                  "initial_loan_amount": "38500.00"
+                  "last_updated": "Fri, 19 Apr 2024 16:18:48 GMT"
+                  "monthly_payment": "641.67"
+                  "request_id": 81
+                  "vin": "5N1AR2MM3FC606723"
+  "/get/finance/report":
+    "post":
+      "tags":
+        - "Gets"
+      "summary": "Returns finance report information for a customer"
+      "description": "Customer's Finance Report"
+      "requestBody":
+        "description": "Send in a customer's email to see their finance report."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "email": "customer@foyotahaven.com"
+        "required": true
+      "responses":
+        "200":
+          "description": "Successful operation"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "actual_loan_amount": "18250.00"
+                  "approved": 1
+                  "apr": 15
+                  "car_price": "38250.00"
+                  "credit_score": 460
+                  "down_payment": "20000.00"
+                  "email": "hmault0@nih.gov"
+                  "income": "100000.00"
+                  "max_loan_amount": "25000.00"
+                  "vin": "WAUFFAFL4AA698301"
+  "/get/monthly_sales_report":
+    "post":
+      "tags":
+        - "Gets"
+      "summary": "Returns all transactions for a given month and year"
+      "description": "Get all Foyota Haven Transactions for month and year"
+      "requestBody":
+        "description": "Send in the month and year for transactions during that month."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "month": "April"
+                "year": "2024"
+        "required": true
+      "responses":
+        "200":
+          "description": "Successful operation"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  -
+                    "amount": "88000.00"
+                    "company": "Bank of America"
+                    "created": "Tue, 16 Apr 2024 01:33:32 GMT"
+                    "notes": "\nCar Price: 28000.0\nTotal warranty costs: 60000.0\n5% Tax\n"
+                    "payment_method": "3123"
+                    "payment_type": 0
+                    "services": []
+                    "transaction_id": 111
+                    "transaction_type": 0
+                    "vin": "5N1AR1NB3BC680158"
+                    "warranties":
+                      - "Oil Changes"
+                      - "Tire Rotation and Alignment"
+  "/buy/car/full":
+    "post":
+      "tags":
+        - "Buying"
+      "summary": "Handles buying a car in full"
+      "description": "Purchasing a car at full price is handled here."
+      "requestBody":
+        "description": "Send in customer, car, transaction, and payment info to purchase a vehicle."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "email": "creamsicle@gmail.com"
+                "vin": "JHMZE2H77ES150185"
+                "warranties":
+                  - "Oil Changes"
+                  - "Tire Rotation and Alignment"
+                  - "Battery Replacement"
+                "car_price": 38250
+                "warranties_cost": 123102
+                "payment_type": 0
+                "transaction_type": 0
+                "total": 661283.53
+                "company": "Bank of America"
+                "account_number": "123123123123"
+                "routing_number": "021200339"
+        "required": true
+      "responses":
+        "200":
+          "description": "Successful operation"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "code": 200
+                  "isValid": 1
+                  "message": "Successfully created transaction for car"
+                  "status": "success"
+        "406":
+          "description": "Payment Information not valid"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "code": 406
+                  "errorType": 2
+                  "isValid": 0
+                  "message": "Error, not a valid account number for Bank of America."
+  "/buy/car/loan":
+    "post":
+      "tags":
+        - "Buying"
+      "summary": "Handles buying a car by financing"
+      "description": "Checks if customer has a valid loan, and if so proceeds to purchase the car."
+      "requestBody":
+        "description": "Send in customer, car, transaction, and payment info to finance the car."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "email": "creamsicle@gmail.com"
+                "vin": "JHMFA3F29AS538797"
+                "warranties":
+                  - "Tire Rotation and Alignment"
+                  - "Battery Replacement"
+                  - "Brake Inspection"
+                "payment_type": 0
+                "transaction_type": 1
+                "company": "Bank of America"
+                "account_number": "123123123123"
+                "routing_number": "021200339"
+                "total": 30000
+                "down_payment": 30000
+        "required": true
+      "responses":
+        "200":
+          "description": "Successful operation"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "code": 200
+                  "isValid": 1
+                  "message": "Successfully created transaction for car and approved loan"
+                  "status": "success"
+  "/buy/services":
+    "post":
+      "tags":
+        - "Buying"
+      "summary": "Handles buying a services for a car"
+      "description": "Checks if customer has valid payment, and if so proceeds to purchase the car."
+      "requestBody":
+        "description": "Send in customer, car, transaction, and payment info to purchase the services."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "email": "creamsicle@gmail.com"
+                "vin": "JHMFA3F29AS538797"
+                "services":
+                  - "Tire Rotation and Alignment"
+                  - "Brake Inspection"
+                "payment_type": 0
+                "transaction_type": 2
+                "company": "Bank of America"
+                "account_number": "123123123123"
+                "routing_number": "021200339"
+                "total": 21000
+                "services_cost": 40000
+                "warranties_discount": 20000
+        "required": true
+      "responses":
+        "200":
+          "description": "Successful operation"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "code": 200
+                  "isValid": 1
+                  "message": "Successfully created transaction for services"
+                  "status": "success"
+  "/create/request":
+    "post":
+      "tags":
+        - "Loans"
+      "summary": "Creates a loan approval request"
+      "description": "Checks if customer qualifies for a loan."
+      "requestBody":
+        "description": "Send in customer and car information to receive the verdict."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "email": "creamsicle@gmail.com"
+                "vin": "3D73Y3CL5BG630193"
+                "total": 142700
+                "income": 1000
+                "down_payment": 10000
+        "required": true
+      "responses":
+        "202":
+          "description": "Successful operation, loan approved"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "approved": 1
+                  "code": 202
+                  "message": "Approve request for loan"
+                  "status": "success"
+        "201":
+          "description": "Successful operation, but loan not approved"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "approved": 0
+                  "code": 201
+                  "message": "Fail to approve request for loan"
+                  "status": "fail"
+  "/pay/loan":
+    "patch":
+      "tags":
+        - "Loans"
+      "summary": "Pay monthly payment for a loan"
+      "description": "Processes a payment for a loan"
+      "requestBody":
+        "description": "Send in customer, car, transaction, and payment info to make the monthly payment."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "email": "creamsicle@gmail.com"
+                "vin": "UFACCADG1EH783905"
+                "payment_type": 1
+                "transaction_type": 1
+                "amount": 100.5
+                "company": "Visa"
+                "card_num": "4490 4978 3645 2232"
+                "card_exp": "10/2024"
+                "card_cvc": "173"
+        "required": true
+      "responses":
+        "201":
+          "description": "Successful operation"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "code": 201
+                  "message": "Successfully created monthly transaction"
+                  "status": "success"
+  "/incur/interest":
+    "patch":
+      "tags":
+        - "Loans"
+      "summary": "Incurs Interest for a loan after a month has passed"
+      "description": "Incurs interest for all loans under a customer's email."
+      "requestBody":
+        "description": "Send in customer email."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "email": "customer@foyotahaven.com"
+        "required": true
+      "responses":
+        "200":
+          "description": "Successful operation"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "code": 200
+                  "message": "Successfully updated loan to include interest"
+                  "status": "success"
+  "/clean/user/transactions":
+    "post":
+      "tags":
+        - "Cleaning"
+      "summary": "Clean User Transactions"
+      "description": "Deletes Transactions for a User."
+      "requestBody":
+        "description": "Send in customer email to clear their transactions."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "email": "customer@foyotahaven.com"
+        "required": true
+      "responses":
+        "200":
+          "description": "Successful operation"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "status": "success"
+  "/clean/user/requests":
+    "post":
+      "tags":
+        - "Cleaning"
+      "summary": "Clean User Loan Requests"
+      "description": "Deletes Loan Requests for a User."
+      "requestBody":
+        "description": "Send in customer email to clear their loan requests."
+        "content":
+          "application/json":
+            "schema":
+              "example":
+                "email": "customer@foyotahaven.com"
+        "required": true
+      "responses":
+        "200":
+          "description": "Successful operation"
+          "content":
+            "application/json":
+              "schema":
+                "example":
+                  "status": "success"

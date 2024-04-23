@@ -163,6 +163,16 @@ def test_get_user_transactions(client):
     response = client.post("/get/user/transactions", json={
         "email":"creamsicle@gmail.com"
     })
+    assert len(response.json) > 0
+    assert response.status_code == 200
+
+def test_get_monthly_sales_report(client):
+    '''test getting monthly sales report'''
+    response = client.post("/get/monthly_sales_report", json={
+        "month":"April",
+        "year":"2024"
+    })
+    assert len(response.json) > 0
     assert response.status_code == 200
 
 def test_clean_user_transactions(client):
@@ -177,13 +187,4 @@ def test_clean_user_requests(client):
     response = client.post("/clean/user/requests", json={
         "email":"creamsicle@gmail.com"
     })
-    assert response.status_code == 200
-
-def test_get_monthly_sales_report(client):
-    '''test getting monthly sales report'''
-    response = client.post("/get/monthly_sales_report", json={
-        "month":"April",
-        "year":"2024"
-    })
-    assert len(response.json) > 0
     assert response.status_code == 200
