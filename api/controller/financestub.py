@@ -39,12 +39,12 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 
 app.register_blueprint(swaggerui_blueprint)
 
-## This is going to be a simple financal stub for the online car dealership ##
+## This is going to be a simple finance stub for the Foyota Haven dealership ##
+
 @app.route("/")
 def redirect_to_api_docs():
     '''Root redirects user to api documentation'''
     return redirect("/api/docs", code=302)
-
 
 @app.post("/get/user/transactions")
 def handle_get_user_transactions():
@@ -127,10 +127,11 @@ def handle_clear_user_requests():
     return jsonify({"status":"success"})
 
 @app.post("/get/monthly_sales_report")
-def handle_get_monthly_sales_report(info):
+def handle_get_monthly_sales_report():
     '''retrieves all sales information for given month and year'''
     info=request.json
     response = get_monthly_sales_report_app(info)
+    return jsonify(response), 200
 
 if __name__ == "__main__":
     app.run(debug=True, port=8001)

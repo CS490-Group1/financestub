@@ -113,8 +113,11 @@ def get_transactions(info):
 
 def get_monthly_sales_report_transactions(info):
     '''get transactions based on month selected'''
-    month = info.get("month")
-    year = info.get("year")
+    months = {'january':1, 'february':2, 'march':3, 'april':4, 'may':5, 'june':6,
+              'july':7, 'august':8, 'september':9, 'october':10, 'november':11,
+              'december':12}
+    month = months[info.get("month").lower()]
+    year = int(info.get("year"))
     start_of_month = datetime(year, month, 1)
     end_of_month = datetime(year, month + 1, 1) if month < 12 else datetime(year + 1, 1, 1)
 

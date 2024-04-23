@@ -1,14 +1,13 @@
 openapi: 3.0.3
 info:
-  title: Foyota Haven - Financial Stub
-  description: |-
-    Financial Stub API
-#   termsOfService: http://swagger.io/terms/
-#   contact:
-#     email: apiteam@swagger.io
-#   license:
-#     name: Apache 2.0
-#     url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Foyota Haven - Finance Stub
+  description: Finance Stub API Documentation
+  #   termsOfService: http://swagger.io/terms/
+  #   contact:
+  #     email: apiteam@swagger.io
+  #   license:
+  #     name: Apache 2.0
+  #     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.11
 # externalDocs:
 #   description: Find out more about Swagger
@@ -16,33 +15,39 @@ info:
 # servers:
 #   - url: https://petstore3.swagger.io/api/v3
 tags:
-  - name: Financial Stub
-    description: Everything regarding Foyota Haven's financial stub.
-    # externalDocs:
-    #   description: Find out more
-    #   url: http://swagger.io
-#   - name: store
-#     description: Access to Petstore orders
+  - name: Gets
+    description: Various GET requests for user information.
+  - name: Buying
+    description: Everything regarding buying products.
+  - name: Loans
+    description: Everything regarding loans.
+  - name: Cleaning
+    description: Additional functionality to clean up database (mainly for Pytests).
 #     externalDocs:
 #       description: Find out more about our store
 #       url: http://swagger.io
 #   - name: user
 #     description: Operations about user
 paths:
-  /creditcheck:
-    get:
+  /get/user/transactions:
+    post:
       tags:
-        - Financial Stub
-      summary: Get a Credit Score and APR for a customer
-      description: Credit Score + APR for customer
-      operationId: creditCheck
+        - Gets
+      summary: Returns a list of customer's transaction history
+      description: Customer's Transaction History
+      operationId: handle_get_user_transactions
+      requestBody:
+        description: Send in customer's email for their transaction history.
+        content:
+          application/json:
+            schema:
+              example: { "email": "customer@foyotahaven.com" }
       responses:
-        '200':
+        "200":
           description: Successful operation
           content:
-              application/json:
-                example: {"apr": 5.6,
-                          "credit_score": 827}
+            application/json:
+              example: { "email": "customer@foyotahaven.com" }
 
   /loanqualification:
     post:
@@ -56,19 +61,21 @@ paths:
         content:
           application/json:
             schema:
-              example: {"income": "50000",
-                        "car_price": "50000",
-                        "down_payment": "10000"}
+              example:
+                {
+                  "income": "50000",
+                  "car_price": "50000",
+                  "down_payment": "10000",
+                }
         required: true
       responses:
-        '200':
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                example: {"approved": 0,
-                          "loan_approved": 40000.0}
-                         
+                example: { "approved": 0, "loan_approved": 40000.0 }
+
   /initialpayment:
     post:
       tags:
@@ -81,21 +88,16 @@ paths:
         content:
           application/json:
             schema:
-              example: {
-                          "loan_amount": "5500"
-                       }
+              example: { "loan_amount": "5500" }
         required: true
       responses:
-        '200':
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                example: {
-                            "loan_amount": 5500.0,
-                            "monthly_payment": 91.67
-                         }
-                         
+                example: { "loan_amount": 5500.0, "monthly_payment": 91.67 }
+
   /payment:
     post:
       tags:
@@ -108,19 +110,21 @@ paths:
         content:
           application/json:
             schema:
-              example: {"loan_amount": "5408.33",
-                        "apr": 12.0,
-                        "created": "2024-03-31 00:59:43",
-                        "last_updated": "2024-04-30 00:59:43"}
+              example:
+                {
+                  "loan_amount": "5408.33",
+                  "apr": 12.0,
+                  "created": "2024-03-31 00:59:43",
+                  "last_updated": "2024-04-30 00:59:43",
+                }
         required: true
       responses:
-        '200':
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                example: {"loan_amount": 5462.41,
-                          "monthly_payment": 92.58}
+                example: { "loan_amount": 5462.41, "monthly_payment": 92.58 }
   /validatebankpayment:
     post:
       tags:
@@ -133,20 +137,20 @@ paths:
         content:
           application/json:
             schema:
-              example: {"bank":"Bank of America",
-                        "account_number":"123123123123",
-                        "routing_number":"021200339"}
+              example:
+                {
+                  "bank": "Bank of America",
+                  "account_number": "123123123123",
+                  "routing_number": "021200339",
+                }
         required: true
       responses:
-        '200':
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                example: {
-                            "loan_amount": 5500.0,
-                            "monthly_payment": 91.67
-                         }
+                example: { "loan_amount": 5500.0, "monthly_payment": 91.67 }
   /validatecardpayment:
     post:
       tags:
@@ -159,17 +163,23 @@ paths:
         content:
           application/json:
             schema:
-              example: {"card_company":"Visa",
-                        "card_num":"4490 4978 3645 2232",
-                        "card_exp":"10/2024",
-                        "card_cvc":"173"}
+              example:
+                {
+                  "card_company": "Visa",
+                  "card_num": "4490 4978 3645 2232",
+                  "card_exp": "10/2024",
+                  "card_cvc": "173",
+                }
         required: true
       responses:
-        '200':
+        "200":
           description: Successful operation
           content:
             application/json:
               schema:
-                example: {"errorType": 0,
-                          "isValid": 1,
-                          "message": "Card Payment Details Verified!"}
+                example:
+                  {
+                    "errorType": 0,
+                    "isValid": 1,
+                    "message": "Card Payment Details Verified!",
+                  }

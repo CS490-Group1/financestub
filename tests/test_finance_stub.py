@@ -117,7 +117,7 @@ def test_monthly_payment_card(client):
     })
     assert response.status_code == 201
 
-def test_incurr_interest(client):
+def test_incur_interest(client):
     '''test incurring interest after a month'''
     response = client.patch('/incur/interest', json={
         "email":"creamsicle@gmail.com"
@@ -158,6 +158,13 @@ def test_get_finance_report(client):
     assert len(response.json) > 0
     assert response.status_code == 200
 
+def test_get_user_transactions(client):
+    '''test get user transactions'''
+    response = client.post("/get/user/transactions", json={
+        "email":"creamsicle@gmail.com"
+    })
+    assert response.status_code == 200
+
 def test_clean_user_transactions(client):
     '''test clean user transactions'''
     response = client.post("/clean/user/transactions", json={
@@ -170,4 +177,13 @@ def test_clean_user_requests(client):
     response = client.post("/clean/user/requests", json={
         "email":"creamsicle@gmail.com"
     })
+    assert response.status_code == 200
+
+def test_get_monthly_sales_report(client):
+    '''test getting monthly sales report'''
+    response = client.post("/get/monthly_sales_report", json={
+        "month":"April",
+        "year":"2024"
+    })
+    assert len(response.json) > 0
     assert response.status_code == 200
