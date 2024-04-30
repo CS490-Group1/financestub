@@ -1,8 +1,18 @@
+'''
+Finance payment App
+
+This directs traffic relating to the finance payment
+app from the endpoints
+'''
+# pylint: disable=import-error
 from services.request_loans import clear_user_requests_domain
-from services.transactions import (delete_all_transactions_domain, get_all_transactions_domain, 
+from services.transactions import (delete_all_transactions_domain,
+                                   get_all_transactions_domain, 
                                    get_monthly_sales_report_domain)
-from services.finance_payments import (buy_car_full_domain, buy_car_loan_domain, incur_interest_domain,
-                               pay_loan_domain, request_create_domain, buy_services_domain)
+from services.finance_payments import (buy_car_full_domain,
+                                    buy_car_loan_domain, incur_interest_domain,
+                                    pay_loan_domain, request_create_domain,
+                                    buy_services_domain)
 
 def buy_car_full_app(info):
     '''buy car with full payment based on passed in info'''

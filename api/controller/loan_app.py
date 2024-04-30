@@ -1,3 +1,10 @@
+'''
+Loan App
+
+This directs traffic relating to the loan
+app from the endpoints
+'''
+# pylint: disable=import-error
 from services.request_loans import get_finance_report_domain
 from services.approved_loans import get_approved_loan
 
