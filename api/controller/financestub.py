@@ -1,3 +1,8 @@
+'''
+Financestub app
+
+Where all endpoints for finance stub actions reside
+'''
 import sys
 import os
 from flask import Flask, request, jsonify, redirect
@@ -27,7 +32,8 @@ swaggerui_blueprint = get_swaggerui_blueprint(
     config={  # Swagger UI config overrides
         'app_name': "Foyota Haven - Finance Stub"
     },
-    # oauth_config={  # OAuth config. See https://github.com/swagger-api/swagger-ui#oauth2-configuration .
+    # oauth_config={  # OAuth config. See
+    # https://github.com/swagger-api/swagger-ui#oauth2-configuration .
     #    'clientId': "your-client-id",
     #    'clientSecret': "your-client-secret-if-required",
     #    'realm': "your-realms",
