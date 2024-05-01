@@ -23,8 +23,7 @@ app = Flask(__name__)
 CORS(app)
 
 SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
-API_URL = 'https://raw.githubusercontent.com/CS490-Group1/financestub/dev/static/documentation.yaml'
-# Our API url
+API_URL = '/static/documentation.yaml'  # Our API url
 
 # Call factory function to create our blueprint
 swaggerui_blueprint = get_swaggerui_blueprint(
