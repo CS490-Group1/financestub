@@ -9,7 +9,7 @@ from data.transaction_storage import (store_car_transaction,
                     store_monthly_transaction, get_transactions,
                     delete_all_transactions, store_service_transaction,
                     get_warranties_in_transaction, get_services_in_transaction,
-                    get_monthly_sales_report_transactions)
+                    get_monthly_sales_report_transactions, transaction_type)
 
 def generate_car_transaction(info, response, notes):
     '''generate car transactions based on passed in info'''
@@ -111,3 +111,14 @@ def delete_all_transactions_domain(info):
     transactions_table = get_transactions(info)
     for transaction in transactions_table:
         delete_all_transactions(transaction.transaction_id)
+
+def get_transaction_type_domain(info):
+    '''get transaction type'''
+    transaction = transaction_type(info)
+    if not transaction:
+        return {
+            "transaction_type":4
+        }
+    return {
+        "transaction_type":transaction.transaction_type
+    }
