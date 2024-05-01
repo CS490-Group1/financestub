@@ -5,6 +5,7 @@ Layer where all transaction related functions talk to the database
 '''
 # pylint: disable=import-error
 from datetime import datetime
+from sqlalchemy import and_
 from sqlalchemy.orm import Session
 from data.finance_alchemy_setup import engine
 from data.finance_alchemy_classes import (
@@ -109,6 +110,20 @@ def get_transactions(info):
         ).filter(
             Transactions.email == info.get("email"),
         ).all()
+    return result
+
+def transaction_type(info):
+    '''get transaction type based on info'''
+    with Session(engine) as session:
+        result = session.query(
+            Transactions
+        ).filter(
+            and_(
+                Transactions.email == info.get("email"),
+                Transactions.vin == info.get("vin"),
+                Transactions.transaction_type < 2
+            )
+        ).first()
     return result
 
 def get_monthly_sales_report_transactions(info):

@@ -15,7 +15,8 @@ sys.path.append(parent_dir)
 # pylint: disable=wrong-import-position
 from finance_payment_app import (buy_car_full_app, buy_car_loan_app, buy_services_app,
                          clear_user_requests_app, clear_user_transactions_app,
-                         incur_interest_app, pay_loan_app, request_create_app,
+                         get_transaction_type_app, pay_loan_app,
+                         incur_interest_app, request_create_app,
                          get_user_transactions_app, get_monthly_sales_report_app)
 from loan_app import get_finance_report_app, get_user_approved_loan_app
 
@@ -58,6 +59,13 @@ def handle_get_user_transactions():
     '''handle get user transactions'''
     info = request.json
     response = get_user_transactions_app(info)
+    return jsonify(response), 200
+
+@app.post("/get/transaction/type")
+def handle_get_transaction_type():
+    '''handle get transaction type'''
+    info = request.json
+    response = get_transaction_type_app(info)
     return jsonify(response), 200
 
 @app.post("/buy/car/full")

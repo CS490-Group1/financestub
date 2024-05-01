@@ -8,7 +8,8 @@ app from the endpoints
 from services.request_loans import clear_user_requests_domain
 from services.transactions import (delete_all_transactions_domain,
                                    get_all_transactions_domain, 
-                                   get_monthly_sales_report_domain)
+                                   get_monthly_sales_report_domain,
+                                   get_transaction_type_domain)
 from services.finance_payments import (buy_car_full_domain,
                                     buy_car_loan_domain, incur_interest_domain,
                                     pay_loan_domain, request_create_domain,
@@ -49,6 +50,10 @@ def clear_user_requests_app(info):
 def get_user_transactions_app(info):
     '''get transaction history of user'''
     return get_all_transactions_domain(info)
+
+def get_transaction_type_app(info):
+    '''get transaction type based on info'''
+    return get_transaction_type_domain(info)
 
 def get_monthly_sales_report_app(info):
     '''get all transaction history of given month and year'''
