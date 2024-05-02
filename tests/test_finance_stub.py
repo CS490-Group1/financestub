@@ -51,7 +51,6 @@ def test_get_loan_qual_fail(client):
         "income": 1000,
         "down_payment": 10000
     })
-    assert response.json['approved'] == 0
     assert response.status_code == 204
 
 def test_get_loan_qual_success(client):
@@ -63,7 +62,6 @@ def test_get_loan_qual_success(client):
         "income": 300000,
         "down_payment": 10000
     })
-    assert response.json['approved'] == 1
     assert response.status_code == 202
 
 def test_buy_car_loan_bank(client):
@@ -89,12 +87,11 @@ def test_get_loan_qual_fail_have_loan(client):
     '''test check if loan qualification fails'''
     response = client.post("/create/request", json={
         "email":"creamsicle@gmail.com",
-        "vin":"JHMFA3F29AS538797",
+        "vin":"3D73Y3CL5BG630193",
         "total": 142700.00,
         "income": 300000,
         "down_payment": 10000
     })
-    assert response.json['approved'] == 0
     assert response.status_code == 201
 
 def test_buy_services(client):

@@ -25,25 +25,19 @@ def request_create_domain(info):
         approved = 0
         notes = "Already has loan active"
     create_request_domain(info, response, approved, notes)
-    if response["approved"]:
+    if approved == 1:
         return{
             'status':'success',
             'message':'Approve request for loan',
             "approved":response["approved"],
             'code':202
         }
-    if notes == "Does not qualify loan":
-        return{
-            'status':'fail',
-            'message':notes,
-            "approved":response["approved"],
-            'code':204
-        }
     return{
         'status':'fail',
         'message':notes,
         "approved":response["approved"],
-        'code':201
+        'code':204\
+            if notes == "Does not qualify loan" else 201
     }
 
 def buy_car_full_domain(info):
