@@ -32,9 +32,16 @@ def request_create_domain(info):
             "approved":response["approved"],
             'code':202
         }
+    if notes == "Does not qualify loan":
+        return{
+            'status':'fail',
+            'message':notes,
+            "approved":response["approved"],
+            'code':204
+        }
     return{
         'status':'fail',
-        'message':'Fail to approve request for loan',
+        'message':notes,
         "approved":response["approved"],
         'code':201
     }
