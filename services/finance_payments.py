@@ -35,8 +35,8 @@ def request_create_domain(info):
     return{
         'status':'fail',
         'message':notes,
-        "approved":response["approved"],
-        'code':204\
+        'approved':response["approved"],
+        'code':203\
             if notes == "Does not qualify loan" else 201
     }
 
