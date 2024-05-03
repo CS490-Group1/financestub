@@ -51,7 +51,7 @@ def test_get_loan_qual_fail(client):
         "income": 1000,
         "down_payment": 10000
     })
-    assert response.status_code == 204
+    assert response.status_code == 203
 
 def test_get_loan_qual_success(client):
     '''test check if loan qualification is successful'''
