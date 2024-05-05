@@ -179,7 +179,7 @@ def test_get_user_transactions(client):
 def test_get_monthly_sales_report(client):
     '''test getting monthly sales report'''
     response = client.post("/get/monthly_sales_report", json={
-        "month":"April",
+        "month":"January",
         "year":"2024"
     })
     assert len(response.json) > 0
