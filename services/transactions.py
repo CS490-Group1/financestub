@@ -42,7 +42,7 @@ def get_all_transactions_domain(info):
         warranties = []
         services = []
 
-        if transaction.transaction_type == 3:
+        if transaction.transaction_type == 2:
             services_in_transaction = get_services_in_transaction(transaction.transaction_id)
             if len(services_in_transaction) != 0:
                 for serv in services_in_transaction:
